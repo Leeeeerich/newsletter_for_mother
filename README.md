@@ -4,6 +4,6 @@ It test application
 
 ## Getting Started
 
-| PIN-code enter |
+| About app |
 |:-:|
 | ![First](/.github/assets/1.gif) |
