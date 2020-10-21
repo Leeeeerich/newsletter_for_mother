@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:newsletter_for_mother/src/model/constants/fields.dart';
 
 class User {
@@ -83,4 +84,14 @@ class NewsPost {
       PostActions.fromMap(map['post_actions']),
     );
   }
+}
+
+class NewsHeader {
+  String articleId;
+  String title;
+  String group;
+  bool isClosed = false;
+
+  NewsHeader(
+      {@required this.articleId, @required this.title, @required this.group});
 }

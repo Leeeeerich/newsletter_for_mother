@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:newsletter_for_mother/src/ui/custom/tab_view_with_divider.dart';
 import 'package:newsletter_for_mother/src/ui/home/popular/popular_screen.dart';
 import 'package:newsletter_for_mother/src/ui/home/subscribes/subscribes_screen.dart';
 import 'package:newsletter_for_mother/src/ui/utils.dart';
@@ -29,10 +30,10 @@ class _HomeScreen extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [
-          Padding(
-            padding: EdgeInsets.only(right: 8),
-            child: Container(
+        title: Padding(
+          padding: EdgeInsets.only(right: 8, top: 8),
+          child: Row(children: [
+            Container(
                 padding: EdgeInsets.all(4),
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: Colors.indigo),
@@ -40,9 +41,11 @@ class _HomeScreen extends State<HomeScreen>
                   Icons.list,
                   color: Colors.white,
                 )),
-          ),
-          I18nText("news_title"),
-        ]),
+            Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: I18nText("news_title")),
+          ]),
+        ),
         // backgroundColor: Colors.gre,
         actions: [
           IconButton(
@@ -57,8 +60,9 @@ class _HomeScreen extends State<HomeScreen>
             },
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
+        bottom: TabViewWithDivider(
+          _tabController,
+          appBarHeight: 56,
           tabs: [
             Tab(text: FlutterI18n.translate(context, "news_title")),
             Tab(text: FlutterI18n.translate(context, "populars_title")),

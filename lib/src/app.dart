@@ -27,7 +27,8 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => HomeModel(_repository)),
-        ChangeNotifierProvider(create: (ctx) => NewsModel(_repository))
+        ChangeNotifierProvider(create: (ctx) => NewsModel(_repository)),
+        // ChangeNotifierProvider(create: (ctx) => ArticleModel(_repository)),
       ],
       child: MaterialApp(
         theme: ThemeData(primaryColor: getColorFromHex("#f5f5f5")),
@@ -39,6 +40,7 @@ class App extends StatelessWidget {
         initialRoute: Routes.HOME,
         routes: {
           Routes.HOME: (ctx) => HomeScreen(),
+          // Routes.ARTICLE: (ctx) => ArticleScreen()
         },
       ),
     );

@@ -7,9 +7,11 @@ class NewsModel extends ChangeNotifier {
 
   ScrollController _scrollController;
   List<NewsPost> _posts = List();
+  NewsHeader header;
 
   NewsModel(this._repository) {
     _scrollController = ScrollController();
+    loadHeader();
     loadPosts(0, 9);
   }
 
@@ -21,9 +23,17 @@ class NewsModel extends ChangeNotifier {
     _repository.getPosts(startIndex, endIndex).then((value) {
       if (value.isSuccessful) {
         _posts = value.result;
+        notifyListeners();
       } else {
         //TODO show error message
       }
     });
+  }
+
+  loadHeader() {
+    header = NewsHeader(
+        articleId: "e78qe7w58w",
+        title: "Что такое убер плюшки?",
+        group: "Фичи для детей");
   }
 }

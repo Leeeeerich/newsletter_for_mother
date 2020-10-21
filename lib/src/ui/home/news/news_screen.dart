@@ -16,14 +16,77 @@ class _NewsScreen extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<NewsModel>(builder: (ctx, data, _) {
-      return Container(
-        color: getColorFromHex("e5e5e5"),
-        child: ListView(
-          controller: data.scrollController,
-          children: _getItems(context, data.posts),
+      return Stack(children: [
+        Container(
+          color: getColorFromHex("e5e5e5"),
+          child: ListView(
+            padding: EdgeInsets.only(
+                top: data.header != null && !data.header.isClosed
+                    ? HEADER_HEIGHT
+                    : 0),
+            controller: data.scrollController,
+            children: _getItems(context, data.posts),
+          ),
         ),
-      );
+        Visibility(
+            visible: data.header != null && !data.header.isClosed,
+            child: _header(data.header)),
+      ]);
     });
+  }
+
+  Widget _header(NewsHeader header) {
+    if (header == null) return Container();
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: GestureDetector(
+        onTap: () {
+          _openArticleScreen(header.articleId);
+        },
+        child: Container(
+          height: HEADER_HEIGHT - 16,
+          padding: EdgeInsets.only(left: 16),
+          decoration: BoxDecoration(color: Colors.cyan),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_right_alt_outlined,
+                            color: Colors.white),
+                        Text(header.group,
+                            style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.close, color: Colors.white),
+                      onPressed: () {
+                        header.isClosed = true;
+                        setState(
+                            () {}); //TODO not best, because all list will redraw. Different stream widgets for list and header.
+                      })
+                ],
+              ),
+              Text(
+                header.title,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   List<Widget> _getItems(BuildContext ctx, List<NewsPost> rawPosts) {
@@ -130,23 +193,25 @@ class _NewsScreen extends State<NewsScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _iconsButtonsWithCounter(
-              actions.isLike ? Icons.favorite : Icons.favorite_border,
-              actions.liked, () {
-            actions.isLike =
-                !actions.isLike; //TODO It is mock, need sending status
-            actions.isLike
-                ? actions.liked++
-                : actions.liked--; //TODO It is mock, need sending status
-          }),
-          _iconsButtonsWithCounter(
-              Icons.favorite_border, actions.comments, () {}),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
-          ),
+          Row(children: [
+            _iconsButtonsWithCounter(
+                actions.isLike ? Icons.favorite : Icons.favorite_border,
+                actions.liked, () {
+              actions.isLike =
+                  !actions.isLike; //TODO It is mock, need sending status
+              actions.isLike
+                  ? actions.liked++
+                  : actions.liked--; //TODO It is mock, need sending status
+            }),
+            _iconsButtonsWithCounter(
+                Icons.messenger_outline, actions.comments, () {}),
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {},
+            ),
+          ]),
           IconButton(
             icon: Icon(actions.isFavorite ? Icons.star : Icons.star_border),
             onPressed: () {
@@ -171,4 +236,11 @@ class _NewsScreen extends State<NewsScreen> {
       ],
     );
   }
+
+  _openArticleScreen(String articleId) {
+    // Navigator.pushNamed(context, Routes.ARTICLE, arguments: {articleId: articleId});
+    showToast("OpenArticle screen");
+  }
+
+  static const HEADER_HEIGHT = 150.0;
 }
