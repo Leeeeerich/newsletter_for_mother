@@ -6,4 +6,4 @@ It test application
 
 | PIN-code enter |
 |:-:|
-| ![First](/.github/assets/1.mp4) |
+| ![First](/.github/assets/1.gif) |
